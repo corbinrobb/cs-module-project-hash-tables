@@ -1,7 +1,24 @@
 def word_count(s):
-    # Your code here
+    t = '":;,.-+=/\\|[]{}()*^&'
 
+    filtered_string = ''.join(filter(lambda x : x not in t, s))
 
+    # Gets all escapes values
+    escapes = ''.join([chr(char) for char in range(1, 32)])
+
+    # Takes the escapes values and replaces them all with empty spaces
+    words  = filtered_string.translate(str.maketrans(escapes, ' ' * 31)).split(' ')
+
+    count = {}
+
+    for word in words:
+        if len(word):
+            try:
+                count[word.lower()] = count[word.lower()] + 1
+            except:
+                count[word.lower()] = 1
+
+    return count
 
 if __name__ == "__main__":
     print(word_count(""))
