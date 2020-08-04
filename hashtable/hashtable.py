@@ -6,6 +6,7 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
+        
 
 
 # Hash table can't have fewer than this many slots
@@ -24,6 +25,7 @@ class HashTable:
         self.capacity = capacity if capacity >= MIN_CAPACITY else MIN_CAPACITY
         self.table = [None] * (self.capacity)
         self.count = 0
+        self.resizing = False
 
 
     def get_num_slots(self):
@@ -46,11 +48,13 @@ class HashTable:
         Implement this.
         """
         load_factor = self.count/self.capacity
+        
 
-        if load_factor > 0.7:
-            self.resize(self.capacity * 2)
-        elif load_factor < 0.2:
-            self.resize(self.capacity / 2)
+        if not self.resizing:
+            if load_factor > 0.7:
+                self.resize(int(self.capacity * 2))
+            elif load_factor < 0.2 and self.capacity != MIN_CAPACITY:
+                self.resize(int(self.capacity / 2))
 
         return load_factor
 
@@ -110,6 +114,7 @@ class HashTable:
                 curr_node.next = HashTableEntry(key, value)
 
         self.count += 1
+        self.get_load_factor()
 
 
 
@@ -128,11 +133,13 @@ class HashTable:
             if curr_node.key == key:
                 self.table[i] = curr_node.next
                 self.count -= 1
+                self.get_load_factor()
                 return
             while curr_node.next != None:
                 if curr_node.next.key == key:
                     curr_node.next = curr_node.next.next
                     self.count -= 1
+                    self.get_load_factor()
                     return
             print('Error: Key not found')
         else:
@@ -174,6 +181,8 @@ class HashTable:
         """
 
         new_table = HashTable(new_capacity)
+
+        new_table.resizing = True
 
         for n in self.table:
             if n != None and n.next == None:
@@ -226,6 +235,3 @@ if __name__ == "__main__":
         print(ht.get(f"line_{i}"))
 
     print("")
-
-    print(ht.get_load_factor())
-    print(ht.capacity)
