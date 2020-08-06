@@ -1,5 +1,15 @@
 def no_dups(s):
-    # Your code here
+    words = s.split()
+
+    found = {}
+    new_string = ''
+
+    for word in words:
+        if word not in found:
+            found[word] = True
+            new_string += word + ' '
+
+    return new_string.strip()
 
 
 
