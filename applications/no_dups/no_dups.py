@@ -5,7 +5,7 @@ def no_dups(s):
     new_string = ''
 
     for word in words:
-        if found.get(word) == None:
+        if word not in found:
             found[word] = True
             new_string += word + ' '
 

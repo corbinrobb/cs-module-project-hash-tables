@@ -18,8 +18,8 @@ def get_afters(word_list):
 
         if word_list[i][0].isupper() or (word_list[i][0] == '"' and word_list[i][1].isupper()):
             start_words.append(word_list[i])
-            
-        if afters.get(word_list[i]) is None:
+
+        if word_list[i] not in afters:
             afters[word_list[i]] = [word_list[i + 1]]
         else:
             afters[word_list[i]].append(word_list[i + 1])
